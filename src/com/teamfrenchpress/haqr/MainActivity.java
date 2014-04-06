@@ -1,7 +1,10 @@
 package com.teamfrenchpress.haqr;
 
+import java.util.List;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CookieStore;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 
 import android.content.Intent;
@@ -30,8 +33,8 @@ public class MainActivity extends ActionBarActivity {
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 		
-		CookieSyncManager.createInstance(getApplicationContext());
-		CookieSyncManager.getInstance().startSync();
+		//CookieSyncManager.createInstance(getApplicationContext());
+		//CookieSyncManager.getInstance().startSync();
 	}
 
 	@Override
@@ -54,17 +57,17 @@ public class MainActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	@Override
+	/*@Override
 	protected void onPause()
 	{
-		CookieSyncManager.getInstance().stopSync();
+		//CookieSyncManager.getInstance().stopSync();
 	}
 	
 	@Override
 	protected void onResume()
 	{
-		CookieSyncManager.getInstance().startSync();
-	}
+		//CookieSyncManager.getInstance().startSync();
+	}*/
 
 	/**
 	 * A placeholder fragment containing a simple view.
@@ -100,9 +103,19 @@ public class MainActivity extends ActionBarActivity {
 		
 		public void onSignInSuccess(HttpResponse r)
 		{
-			//Toast.makeText(getActivity(), "SUCCESS", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), cookies.getCookies().get(0).getValue(), Toast.LENGTH_LONG).show();
+			
+			/*List<Cookie> cl = cookies.getCookies();
+			
+			String[] cookieArray = new String[cl.size()];
+            int i=0;
+            for (Cookie c : cl) {
+                cookieArray[i] = c.toString();
+                i++;
+             }*/
 			
 			Intent intent = new Intent(getActivity(), ListActivity.class);
+			intent.putExtra("login-cookies", cookies.getCookies().get(0).getValue());
 			getActivity().startActivity(intent);
 		}
 		
